@@ -103,11 +103,17 @@ export const buildTreeFromJSON = (jsonData) => {
 
 export const searchNodeByPath = (nodes, searchPath) => {
   if (!searchPath || searchPath.trim() === '') return null;
-  
+
   const normalizedSearch = searchPath.trim().toLowerCase();
-  
+
   return nodes.find(node => {
-    const nodePath = node.data.path?.toLowerCase();
-    return nodePath === normalizedSearch || nodePath?.includes(normalizedSearch);
+    const { path, label, value, fullValue } = node.data;
+
+    return (
+      (path && path.toLowerCase().includes(normalizedSearch)) ||
+      (label && label.toLowerCase().includes(normalizedSearch)) ||
+      (value && String(value).toLowerCase().includes(normalizedSearch)) ||
+      (fullValue && String(fullValue).toLowerCase().includes(normalizedSearch))
+    );
   });
 };
